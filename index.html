@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Flikk Server Web Portal</title>
+    </head>
+    <body>
+        <main>
+            <fieldset class="info">
+                <legend>Info</legend>
+                <span><label for="adminpass">admin password:</label><input type="text" id="adminpass" /></span>
+                <span><label for="debugusername">debug username:</label><input type="text" id="debugusername" /></span>
+                <span><label for="debugpassword">debug password:</label><input type="text" id="debugpassword" /></span>
+            </fieldset>
+            <fieldset class="account-list">
+                <legend>Account list</legend>
+                <span><button id="refreshAccountList">Refresh</button></span>
+                <div id="accountList">
+                    Loading...
+                </div>
+            </fieldset>
+            <fieldset class="single-level-info">
+                <legend>Single level info</legend>
+                <div id="singleLevelInfo">
+                    Select a level...
+                </div>
+            </fieldset>
+            <fieldset class="level-list">
+                <legend>Level list</legend>
+                <span>
+                    <label for="listname">List name:</label>
+                    <select name="list" id="listname">
+                        <option value="recent">Recent</option>
+                        <option value="featured">Featured</option>
+                        <option value="ranked">Ranked</option>
+                        <option value="popular">Popular</option>
+                    </select>
+                </span>
+                <span><label for="page">Page:</label><input type="text" id="page" value="0" /></span>
+                <span><button id="refreshLevelList">Refresh</button></span>
+                <div id="levelList">
+                    Loading...
+                </div>
+            </fieldset>
+            <fieldset class="other">
+                <legend>Other</legend>
+                <div id="other"></div>
+            </fieldset>
+            <fieldset class="level-upload">
+                <legend>Upload Level</legend>
+                <div id="levelUpload">
+                    <input type="file" id="levelUploadFilePicker" accept=".flkk" />
+                    <span><label for="levelUploadName">Name:</label><input type="text" id="levelUploadName" /></span>
+                    <span><label for="levelUploadDescription">Description:</label><input type="text" id="levelUploadDescription" /></span>
+                    <span><label for="levelUploadDifficulty">Requested difficulty:</label><input type="number" id="levelUploadDifficulty" value="1" /></span>
+                    <span><label for="levelUploadUnlisted">Unlisted:</label><input type="checkbox" id="levelUploadUnlisted"  /></span>
+                </div>
+            </fieldset>
+        </main>
+
+        <img src="./assets/flikkman.png" id="easteregg" />
+
+        <script src="main.js"></script>
+    </body>
+</html>

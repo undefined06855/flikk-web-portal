@@ -1,0 +1,134 @@
+main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    font-family: sans-serif;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.2fr 0.8fr;
+    grid-template-rows: 0.4fr 1fr 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+
+    background: #1f1f1f;
+}
+
+main > fieldset {
+    resize:both;
+}
+
+pre {
+    text-wrap: wrap;
+}
+
+* {
+    color: #c9c9c9;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+button, select, option {
+    color: #000;
+}
+
+input {
+    background-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+}
+
+fieldset {
+    border-color: rgb(107, 107, 107);
+}
+
+.info { grid-area: 1 / 1 / 2 / 2; }
+.account-list { grid-area: 2 / 1 / 4 / 2; }
+.single-level-info { grid-area: 2 / 2 / 4 / 3; }
+.level-list { grid-area: 2 / 3 / 4 / 5; }
+.other { grid-area: 1 / 2 / 2 / 4; }
+.level-uploader { grid-area: 1 / 2 / 2 / 4; }
+
+.level-list {
+    display: flex;
+    flex-direction: column;
+}
+
+#levelList {
+    overflow-y: scroll;
+}
+
+legend > * {
+    margin-left: 10px;
+}
+legend > *::before {
+    content: "|";
+    margin-right: 10px;
+}
+
+legend > span {
+    display: inline-flex;
+}
+
+span {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+#levelList > * {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: 250px;
+    cursor: pointer;
+}
+
+#levelList > * > * {
+    display: inline;
+}
+/* Author */
+#levelList > * > *:nth-child(2) { grid-area: 1 / 1 / 2 / 2; }
+
+/* Rating block */
+#levelList > * > *:nth-child(3) {
+    grid-area: 1 / 3 / 5 / 5;
+    display: grid;
+    place-items: center;
+}
+/* Stuff inside rating block */
+#levelList > * > *:nth-child(3) > * { grid-area: 1 / 1 / 1 / 1; }
+
+/* Other info */
+#levelList > * > *:nth-child(4) { grid-area: 2 / 1 / 4 / 3; }
+
+/* Description */
+#levelList > * > *:nth-child(5) { grid-area: 4 / 1 / 5 / 5; }
+
+.popup {
+    position: fixed;
+    top: 30px;
+    left: 50vw;
+    translate: -50% 0px;
+    padding: 10px;
+    background-color: red;
+    transition: opacity 1s;
+    pointer-events: none;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#easteregg {
+    position: fixed;
+    bottom: 0;
+    left: -100%;
+    transition: left .75s ease-in-out, translate .2s ease-out;
+}
