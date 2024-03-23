@@ -15,6 +15,14 @@ let info = q(".info")
 /** @type HTMLDivElement */
 let levelUpload = q("#levelUpload")
 
+// get stuff from localstorage on page load
+let inputs = info.querySelectorAll("input")
+let i = 0
+inputs.forEach(input => {
+    input.value = window.localStorage.getItem("input-"+i)
+    i++
+})
+
 let ADMINPASSWORD = q("#adminpass").value
 let USERNAME = q("#debugusername").value
 let PASSWORD = q("#debugpassword").value
@@ -130,6 +138,12 @@ function createButton(label, callbackOnButton) {
  * @param {Level} level 
  */
 async function loadLevelInSingleLevelInfo(level) {
+    let leaderboardNewestData = JSON.parse(await post("https://flicc.xyz:1002/leaderboard/getNewest", {
+        "username": USERNAME,
+        "password": PASSWORD,
+        "level": level.id
+    }))
+
     singleLevelInfo.innerText = ""
     
     let lbl = document.createElement("div")
@@ -219,6 +233,10 @@ async function loadLevelInSingleLevelInfo(level) {
 
     singleLevelInfo.appendChild(buttons)
     
+    singleLevelInfo.append(document.createElement("hr"))
+
+    console.log(leaderboardNewestData)
+
     singleLevelInfo.append(document.createElement("hr"))
 
     let metadataElement = document.createElement("pre")
@@ -398,6 +416,19 @@ info.children[0].appendChild(createButton("Hide", function() {
             element.style.backgroundColor = "red"
         }
     })
+}))
+
+info.appendChild(createButton("(Save locally)", function() {
+    let inputs = info.querySelectorAll("input")
+    let i = 0
+    inputs.forEach(input => {
+        window.localStorage.setItem("input-"+i, input.value)
+        i++
+    })
+}))
+
+info.appendChild(createButton("(Clear localStorage)", function() {
+    window.localStorage.clear()
 }))
 
 // create stuff in single level info section
