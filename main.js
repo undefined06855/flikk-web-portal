@@ -461,7 +461,7 @@ info.appendChild(createButton("Hide", function() {
     })
 }))
 
-info.appendChild(createButton("(Save locally)", function() {
+info.appendChild(createButton("Save locally", function() {
     let inputs = info.querySelectorAll("input")
     let i = 0
     inputs.forEach(input => {
@@ -470,7 +470,7 @@ info.appendChild(createButton("(Save locally)", function() {
     })
 }))
 
-info.appendChild(createButton("(Clear localStorage)", function() {
+info.appendChild(createButton("Clear localStorage", function() {
     window.localStorage.clear()
 }))
 
