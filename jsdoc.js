@@ -12,6 +12,12 @@
 */
 
 /**
+ * @typedef TimeObject
+ * @property {string} n
+ * @property {number} t
+ */
+
+/**
  * @typedef Account
  * @property {string} p
  */

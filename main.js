@@ -138,11 +138,12 @@ function createButton(label, callbackOnButton) {
  * @param {Level} level 
  */
 async function loadLevelInSingleLevelInfo(level) {
+    /** @type Array<TimeObject> */
     let leaderboardNewestData = JSON.parse(await post("https://flicc.xyz:1002/leaderboard/getNewest", {
         "username": USERNAME,
         "password": PASSWORD,
         "level": level.id
-    }))
+    })).value
 
     singleLevelInfo.innerText = ""
     
@@ -166,6 +167,16 @@ async function loadLevelInSingleLevelInfo(level) {
         })
     }))
 
+    singleLevelInfo.append(createInputAndButtonPair("Submit leaderboard time: ", "Submit", function(time) {
+        post("https://flicc.xyz:1002/leaderboard/new", {
+            "level": level.id,
+            "time": Number(time),
+            "username": USERNAME,
+            "password": PASSWORD
+        })
+        loadLevelInSingleLevelInfo(level)
+    }))
+
     singleLevelInfo.appendChild(createInputPairWithButton("Set parameter: ", "Set", function(input1, input2) {
         post("https://flicc.xyz:1002/admin/level/setparam", {
             "level": level.id,
@@ -173,6 +184,7 @@ async function loadLevelInSingleLevelInfo(level) {
             "value": input2,
             "apassword": ADMINPASSWORD
         })
+        loadLevelInSingleLevelInfo(level)
     }))
 
     singleLevelInfo.append(document.createElement("hr"))
@@ -231,11 +243,36 @@ async function loadLevelInSingleLevelInfo(level) {
             updateLevelList()
         }))
 
+        buttons.append(createButton("Unsubmit leaderboard time", function() {
+            post("https://flicc.xyz:1002/admin/leaderboard/deleteRecord", {
+                "level": level.id,
+                "username": USERNAME,
+                "apassword": ADMINPASSWORD
+            })
+
+            // reload
+            loadLevelInSingleLevelInfo(level)
+        }))
+
     singleLevelInfo.appendChild(buttons)
     
     singleLevelInfo.append(document.createElement("hr"))
 
-    console.log(leaderboardNewestData)
+    if (leaderboardNewestData == false) {
+        let message = document.createElement("div")
+        message.innerText = "[no leaderboard data]"
+        singleLevelInfo.append(message)
+    } else {
+        let message = document.createElement("div")
+        message.innerText = "Leaderboard:"
+        singleLevelInfo.append(message)
+
+        for (let timeObject of leaderboardNewestData) {
+            let block = document.createElement("div")
+            block.innerText = timeObject.n + ": " + timeObject.t
+            singleLevelInfo.append(block)
+        }
+    }
 
     singleLevelInfo.append(document.createElement("hr"))
 
