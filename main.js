@@ -14,6 +14,8 @@ let otherStuff = q("#other")
 let info = q(".info")
 /** @type HTMLDivElement */
 let levelUpload = q("#levelUpload")
+/** @type HTMLDivElement */
+let search = q("#search")
 
 // get stuff from localstorage on page load
 let inputs = info.querySelectorAll("input")
@@ -281,21 +283,11 @@ async function loadLevelInSingleLevelInfo(level) {
     singleLevelInfo.append(metadataElement)
 }
 
-async function updateLevelList() {
-    levelList.innerText = "Loading..."
-
-    /** @type Array<Level> */
-    let levels = JSON.parse(await post("https://flicc.xyz:1002/level/get/list/data", {
-        "page": parseInt(q("#page").value),
-        "list": q("#listname").value,
-        "username": USERNAME,
-        "password": PASSWORD
-    })).value
-
+async function fillOutLevelList(levelListObject) {
     levelList.innerText = ""
-    if (levels.length == 0) levelList.innerText = "[no levels in list]"
+    if (levelListObject.length == 0) levelList.innerText = "[no levels in list]"
 
-    for (let level of levels) {
+    for (let level of levelListObject) {
         let element = document.createElement("fieldset")
 
         let title = document.createElement("legend")
@@ -362,6 +354,20 @@ async function updateLevelList() {
             loadLevelInSingleLevelInfo(level)
         })
     }
+}
+
+async function updateLevelList() {
+    levelList.innerText = "Loading..."
+
+    /** @type Array<Level> */
+    let levels = JSON.parse(await post("https://flicc.xyz:1002/level/get/list/data", {
+        "page": parseInt(q("#page").value),
+        "list": q("#listname").value,
+        "username": USERNAME,
+        "password": PASSWORD
+    })).value
+
+    fillOutLevelList(levels)
 }
 
 async function updateAccountList() {
@@ -443,7 +449,7 @@ otherStuff.appendChild(createButton("Backup levels", function() {
 
 
 // create stuff in info section
-info.children[0].appendChild(createButton("Hide", function() {
+info.appendChild(createButton("Hide", function() {
     info.querySelectorAll("input").forEach(element => {
         if (element.style.color == "transparent") {
             element.style.color = ""
@@ -469,7 +475,7 @@ info.appendChild(createButton("(Clear localStorage)", function() {
 }))
 
 // create stuff in single level info section
-singleLevelInfo.parentElement.children[0].appendChild(createInputAndButtonPair("Load level from id", "Load", async function(id) {
+singleLevelInfo.parentElement.children[1].appendChild(createInputAndButtonPair("Load level from id", "Load", async function(id) {
     let levelObject = JSON.parse(await post("https://flicc.xyz:1002/level/get/single/metadata", {
         "username": USERNAME,
         "password": PASSWORD,
@@ -479,30 +485,21 @@ singleLevelInfo.parentElement.children[0].appendChild(createInputAndButtonPair("
     loadLevelInSingleLevelInfo(levelObject)
 }, true))
 
-// create stuff in upload section
-levelUpload.appendChild(createButton("Upload", function() {
-    /** @type File */
-    let file = q("#levelUploadFilePicker").files[0]
+// create stuff in search section
+search.appendChild(createButton("Search (places levels in list on the right)", async function() {
+    /** @type Array<Level> */
+    let levels = JSON.parse(await post("https://flicc.xyz:1002/level/search", {
+        "page": parseInt(q("#searchPage").value),
+        "query": q("#searchQuery").value,
+        "username": USERNAME,
+        "password": PASSWORD
+    })).value
 
-    if (file) {
-        let reader = new FileReader()
-        reader.addEventListener("load", event => {
-            let flikkFileData = event.target.result
-
-            post("https://flicc.xyz:1002/level/upload", {
-                "username": USERNAME,
-                "password": PASSWORD,
-                "title": q("#levelUploadName").value,
-                "description": q("#levelUploadDescription").value,
-                "unlisted": q("#levelUploadUnlisted").checked,
-                "levelDataString": flikkFileData,
-                "requestedDifficulty": q("#levelUploadDifficulty").value
-            })
-            popup("Uploaded! (hopefully)")
-        })
-        reader.readAsText(file)
-    }
+    fillOutLevelList(levels)
 }))
+
+// create stuff in search section
+
 
 // easter egg
 let flikkman = q("#easteregg")

@@ -9,7 +9,7 @@ main {
 
     display: grid;
     grid-template-columns: 1fr 1fr 0.2fr 0.8fr;
-    grid-template-rows: 0.4fr 1fr 1fr;
+    grid-template-rows: 0.4fr 1fr 0.15fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 
@@ -46,7 +46,8 @@ fieldset {
 
 .info { grid-area: 1 / 1 / 2 / 2; }
 .account-list { grid-area: 2 / 1 / 4 / 2; }
-.single-level-info { grid-area: 2 / 2 / 4 / 3; }
+.single-level-info { grid-area: 2 / 2 / 3 / 3; }
+.search { grid-area: 3 / 2 / 4 / 3 }
 .level-list { grid-area: 2 / 3 / 4 / 5; }
 .other { grid-area: 1 / 2 / 2 / 4; }
 .level-uploader { grid-area: 1 / 2 / 2 / 4; }
@@ -60,17 +61,6 @@ fieldset {
     overflow-y: scroll;
 }
 
-legend > * {
-    margin-left: 10px;
-}
-legend > *::before {
-    content: "|";
-    margin-right: 10px;
-}
-
-legend > span {
-    display: inline-flex;
-}
 
 span {
     display: flex;

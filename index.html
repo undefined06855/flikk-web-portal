@@ -24,8 +24,16 @@
             </fieldset>
             <fieldset class="single-level-info">
                 <legend>Single level info</legend>
+                <div></div>
                 <div id="singleLevelInfo">
-                    Select a level...
+                    Or select a level...
+                </div>
+            </fieldset>
+            <fieldset class="search">
+                <legend>Search</legend>
+                <div id="search">
+                    <span><label for="searchQuery">Query:</label><input type="text" id="searchQuery" /></span>
+                    <span><label for="searchPage">Page:</label><input type="number" id="searchPage" value="0" /></span>
                 </div>
             </fieldset>
             <fieldset class="level-list">
@@ -39,7 +47,7 @@
                         <option value="popular">Popular</option>
                     </select>
                 </span>
-                <span><label for="page">Page:</label><input type="text" id="page" value="0" /></span>
+                <span><label for="page">Page:</label><input type="number" id="page" value="0" /></span>
                 <span><button id="refreshLevelList">Refresh</button></span>
                 <div id="levelList">
                     Loading...
