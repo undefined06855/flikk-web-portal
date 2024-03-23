@@ -8,7 +8,7 @@ main {
     font-family: sans-serif;
 
     display: grid;
-    grid-template-columns: 1fr 1fr 0.2fr 0.8fr;
+    grid-template-columns: 0.5fr 1fr 0.2fr 0.8fr;
     grid-template-rows: 0.4fr 1fr 0.15fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;

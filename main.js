@@ -419,7 +419,7 @@ otherStuff.appendChild(createInputPairWithButton("Create account (username, pass
     updateAccountList()
 }))
 
-otherStuff.appendChild(createInputPairWithButton("Change account password (username, new password)", "Change", async function(username, password) {
+otherStuff.appendChild(createInputPairWithButton("Change account password (username, password)", "Change", async function(username, password) {
     let result = JSON.parse(await post("https://flicc.xyz:1002/admin/account/changePassword", {
         "username": username,
         "password": password,
