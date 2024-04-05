@@ -100,7 +100,7 @@ span {
     display: grid;
     place-items: center;
 }
-/* Stuff inside rating block */
+/* Stuff inside rating block (all placed on top of each other) */
 #levelList > * > *:nth-child(3) > * { grid-area: 1 / 1 / 1 / 1; }
 
 /* Other info */
