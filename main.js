@@ -136,7 +136,7 @@ function createInputAndButtonPair(labelLabel, buttonLabel="set", callbackOnButto
     }
 }
 
-function createInputPairWithButton(labelLabel, buttonLabel="set", callbackOnButton) {
+function createInputPairWithButton(labelLabel, buttonLabel="set", callbackOnButton, isNumberInput = false) {
     let parent = document.createElement("span")
         let labelAndInputParent = document.createElement("span")
             let label = document.createElement("label")
@@ -152,7 +152,8 @@ function createInputPairWithButton(labelLabel, buttonLabel="set", callbackOnButt
 
         let button = document.createElement("button")
         button.addEventListener("click", () => {
-            callbackOnButton(input.value, input2.value)
+            if (isNumberInput) callbackOnButton(input.value, Number(input2.value))
+            else               callbackOnButton(input.value, input2.value)
         })
         button.innerText = buttonLabel
     parent.appendChild(labelAndInputParent)
@@ -221,6 +222,16 @@ async function loadLevelInSingleLevelInfo(level) {
         })
         loadLevelInSingleLevelInfo(level)
     }))
+
+    singleLevelInfo.appendChild(createInputPairWithButton("Set (num) parameter: ", "Set", function(input1, input2) {
+        post("https://flicc.xyz:1002/admin/level/setparam", {
+            "level": level.id,
+            "param": input1,
+            "value": input2,
+            "apassword": ADMINPASSWORD
+        })
+        loadLevelInSingleLevelInfo(level)
+    }, true))
 
     singleLevelInfo.append(document.createElement("hr"))
 
@@ -572,7 +583,7 @@ search.appendChild(createButton("Search (places levels in list on the right)", a
 
 // easter egg
 let flikkman = q("#easteregg")
-let timeSinceLastMoved = -1000
+let timeSinceLastMoved = -1700
 function tickEasterEgg() {
     timeSinceLastMoved++
 
@@ -640,9 +651,12 @@ function tickEasterEgg() {
 tickEasterEgg()
 
 document.addEventListener("mousemove", () => {
-    timeSinceLastMoved = -1000
+    timeSinceLastMoved = -1700
     flikkman.style.scale = ""
     flikkman.style.left = "-100%"
     flikkman.style.transition = ""
     flikkman.style.translate = ""
 })
+
+q("#listname").addEventListener("input", updateLevelList)
+q("#page").addEventListener("change", updateLevelList)
