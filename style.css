@@ -24,6 +24,7 @@ main > fieldset {
 
 pre {
     text-wrap: wrap;
+    user-select: text;
 }
 
 * {
@@ -62,6 +63,13 @@ fieldset {
 #levelList {
     overflow-y: scroll;
 }
+
+
+img.featured {
+    filter: brightness(0) saturate(100%) invert(99%) sepia(47%) saturate(7500%) hue-rotate(356deg) brightness(105%) contrast(105%);
+}
+
+.blankFilter { filter: brightness(1); }
 
 
 span {

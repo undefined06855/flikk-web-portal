@@ -283,6 +283,9 @@ async function loadLevelInSingleLevelInfo(level) {
     singleLevelInfo.append(metadataElement)
 }
 
+/**
+ * @param {Array<Level>} levelListObject 
+ */
 async function fillOutLevelList(levelListObject) {
     levelList.innerText = ""
     if (levelListObject.length == 0) levelList.innerText = "[no levels in list]"
@@ -305,16 +308,19 @@ async function fillOutLevelList(levelListObject) {
                 if (level.ranking <= 15)        rankingBackground.src = "./assets/corebg.png"
                 else if (level.ranking != 20)   rankingBackground.src = "./assets/corebg2.png"
                 else                            rankingBackground.src = "./assets/corebg3.png"
+                if (level.featured) rankingBackground.classList.add("featured") // this fucks up everything and creates a new stacking context
                 rankingParent.appendChild(rankingBackground)
             }
 
             let rankingImage = document.createElement("img")
             rankingImage.src = "./assets/"+level.ranking+"cores.png"
+            if (level.featured) rankingImage.classList.add("blankFilter") // goofy stacking context
             rankingParent.appendChild(rankingImage)
 
             let ranking = document.createElement("div")
             ranking.innerText = "Ranking: " + level.ranking == -1 ? "None" : level.ranking
             ranking.style.backgroundColor = "black"
+            if (level.featured) ranking.classList.add("blankFilter") // goofy stacking context
             rankingParent.appendChild(ranking)
         element.append(rankingParent)
 
