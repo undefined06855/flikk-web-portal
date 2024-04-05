@@ -364,7 +364,6 @@ async function fillOutLevelList(levelListObject) {
             let ranking = document.createElement("div")
             ranking.innerText = "Ranking: " + level.ranking == -1 ? "None" : level.ranking
             ranking.style.translate = "140px 0px"
-            ranking.style.backgroundColor = "black"
             ranking.style.padding = "2px"
             if (level.featured) ranking.classList.add("blankFilter") // goofy stacking context
             rankingParent.appendChild(ranking)
