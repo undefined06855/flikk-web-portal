@@ -14,12 +14,14 @@ main {
     grid-row-gap: 0px;
 
     padding: 15px;
+}
 
+main, textarea {
     background: #1f1f1f;
 }
 
-main > fieldset {
-    resize:both;
+textarea {
+    width: 60%;
 }
 
 pre {

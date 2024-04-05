@@ -80,27 +80,60 @@ async function post(url, data) {
     })
 }
 
-function createInputAndButtonPair(labelLabel, buttonLabel="set", callbackOnButton, isNumberInput = false) {
-    let parent = document.createElement("span")
-        let labelAndInputParent = document.createElement("span")
+async function updateMOTDBox() {
+    let motd = JSON.parse(await post("https://flicc.xyz:1002/motd/get", {
+        "username": USERNAME,
+        "password": PASSWORD
+    })).value
+
+    if (motd.length > 50)
+        motd = motd.substring(0, 47) + "...";
+        
+    motdBox.innerText = motd
+
+    if (motd == "") motdBox.innerText = "[NO MOTD!]"
+}
+
+function createInputAndButtonPair(labelLabel, buttonLabel="set", callbackOnButton, isNumberInput = false, isMOTDBox = false) {
+    if (isMOTDBox) {
+        let parent = document.createElement("span")
             let label = document.createElement("label")
             label.innerText = labelLabel
+            parent.appendChild(label)
 
-            let input = document.createElement("input")
-            input.type = isNumberInput ? "number" : "text"
-        labelAndInputParent.appendChild(label)
-        labelAndInputParent.appendChild(input)
+            let textarea = document.createElement("textarea")
+            textarea.style.width = "80%"
+            textarea.style.height = "6rem"
+            parent.appendChild(textarea)
 
-        let button = document.createElement("button")
-        button.addEventListener("click", () => {
-            if (isNumberInput) callbackOnButton(Number(input.value))
-            else               callbackOnButton(input.value)
-        })
-        button.innerText = buttonLabel
-    parent.appendChild(labelAndInputParent)
-    parent.appendChild(button)
+            let button = document.createElement("button")
+            button.addEventListener("click", () => {
+                callbackOnButton(textarea.value)
+            })
+            button.innerText = buttonLabel
+            parent.appendChild(button)
+        return parent
+    } else {
+        let parent = document.createElement("span")
+            let labelAndInputParent = document.createElement("span")
+                let label = document.createElement("label")
+                label.innerText = labelLabel
 
-    return parent
+                let input = document.createElement("input")
+                input.type = isNumberInput ? "number" : "text"
+            labelAndInputParent.appendChild(label)
+            labelAndInputParent.appendChild(input)
+            parent.appendChild(labelAndInputParent)
+
+            let button = document.createElement("button")
+            button.addEventListener("click", () => {
+                if (isNumberInput) callbackOnButton(Number(input.value))
+                else               callbackOnButton(input.value)
+            })
+            button.innerText = buttonLabel
+            parent.appendChild(button)
+        return parent
+    }
 }
 
 function createInputPairWithButton(labelLabel, buttonLabel="set", callbackOnButton) {
@@ -319,7 +352,7 @@ async function fillOutLevelList(levelListObject) {
 
             let ranking = document.createElement("div")
             ranking.innerText = "Ranking: " + level.ranking == -1 ? "None" : level.ranking
-            ranking.style.translate = "120px 0px"
+            ranking.style.translate = "140px 0px"
             ranking.style.backgroundColor = "black"
             ranking.style.padding = "2px"
             if (level.featured) ranking.classList.add("blankFilter") // goofy stacking context
@@ -440,7 +473,7 @@ otherStuff.appendChild(createInputPairWithButton("Change account password (usern
     
     updateAccountList()
 }))
-
+otherStuff.append(document.createElement("hr"))
 otherStuff.appendChild(createButton("Backup BINs", function() {
     post("https://flicc.xyz:1002/admin/backup/triggerBinBackup", {
         "apassword": ADMINPASSWORD,
@@ -454,13 +487,13 @@ otherStuff.appendChild(createButton("Backup levels", function() {
     })
     popup("Check server remote desktop!")
 }))
-
+otherStuff.append(document.createElement("hr"))
 let resultBox = document.createElement("pre")
-resultBox.innerText = "[no input]"
+resultBox.innerText = "[awaiting input]"
 
 otherStuff.appendChild(createInputAndButtonPair("Get raw list data", "Get", input => {
     post("https://flicc.xyz:1002/admin/list/getRaw", {
-        "list": "ranked",
+        "list": input,
         "apassword": ADMINPASSWORD
     }).then(result => {
         resultBox.innerText = JSON.stringify(JSON.parse(result).value)
@@ -468,6 +501,21 @@ otherStuff.appendChild(createInputAndButtonPair("Get raw list data", "Get", inpu
 }))
 
 otherStuff.appendChild(resultBox)
+otherStuff.append(document.createElement("hr"))
+
+let motdBox = document.createElement("pre")
+motdBox.innerText = "loading..."
+otherStuff.appendChild(motdBox)
+
+otherStuff.appendChild(createInputAndButtonPair("Set MOTD", "Set", motd => {
+    post("https://flicc.xyz:1002/admin/motd/setMotd", {
+        "apassword": ADMINPASSWORD,
+        "motd": motd
+    })
+    setTimeout(updateMOTDBox, 170)
+}, false, true))
+
+updateMOTDBox()
 
 // create stuff in info section
 info.appendChild(createButton("Hide", function() {
@@ -524,7 +572,7 @@ search.appendChild(createButton("Search (places levels in list on the right)", a
 
 // easter egg
 let flikkman = q("#easteregg")
-let timeSinceLastMoved = -400
+let timeSinceLastMoved = -1000
 function tickEasterEgg() {
     timeSinceLastMoved++
 
@@ -592,7 +640,7 @@ function tickEasterEgg() {
 tickEasterEgg()
 
 document.addEventListener("mousemove", () => {
-    timeSinceLastMoved = -400
+    timeSinceLastMoved = -1000
     flikkman.style.scale = ""
     flikkman.style.left = "-100%"
     flikkman.style.transition = ""
