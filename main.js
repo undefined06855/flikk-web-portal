@@ -87,7 +87,7 @@ async function updateMOTDBox() {
     })).value
 
     if (motd.length > 50)
-        motd = motd.substring(0, 47) + "...";
+        motd = motd.substring(0, 47) + "... (length: " + motd.length + ")";
         
     motdBox.innerText = motd
 
