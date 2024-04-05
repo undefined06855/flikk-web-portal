@@ -86,8 +86,8 @@ span {
     align-items: center;
 }
 
-span > *:nth-child(1) {
-    margin-right: 10px;
+span > *:nth-child(1), span > *:nth-child(2):not(:last-child) {
+    margin-right: 3px;
 }
 
 #levelList > * {
