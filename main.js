@@ -319,7 +319,9 @@ async function fillOutLevelList(levelListObject) {
 
             let ranking = document.createElement("div")
             ranking.innerText = "Ranking: " + level.ranking == -1 ? "None" : level.ranking
+            ranking.style.translate = "120px 0px"
             ranking.style.backgroundColor = "black"
+            ranking.style.padding = "2px"
             if (level.featured) ranking.classList.add("blankFilter") // goofy stacking context
             rankingParent.appendChild(ranking)
         element.append(rankingParent)
@@ -453,6 +455,19 @@ otherStuff.appendChild(createButton("Backup levels", function() {
     popup("Check server remote desktop!")
 }))
 
+let resultBox = document.createElement("pre")
+resultBox.innerText = "[no input]"
+
+otherStuff.appendChild(createInputAndButtonPair("Get raw list data", "Get", input => {
+    post("https://flicc.xyz:1002/admin/list/getRaw", {
+        "list": "ranked",
+        "apassword": ADMINPASSWORD
+    }).then(result => {
+        resultBox.innerText = JSON.stringify(JSON.parse(result).value)
+    })
+}))
+
+otherStuff.appendChild(resultBox)
 
 // create stuff in info section
 info.appendChild(createButton("Hide", function() {

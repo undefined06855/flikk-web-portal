@@ -25,6 +25,7 @@ main > fieldset {
 pre {
     text-wrap: wrap;
     user-select: text;
+    margin: 0px;
 }
 
 * {
@@ -35,6 +36,10 @@ pre {
 
 button, select, option {
     color: #000;
+}
+
+button {
+    padding: 5px;
 }
 
 input {
@@ -76,6 +81,11 @@ span {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    align-items: center;
+}
+
+span > *:nth-child(1) {
+    margin-right: 10px;
 }
 
 #levelList > * {
