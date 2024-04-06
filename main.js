@@ -651,7 +651,7 @@ tickEasterEgg()
 
 document.addEventListener("mousemove", () => {
     timeSinceLastMoved = -1700
-    flikkman.style.scale = ""
+    flikkman.style.scale = "-1 1"
     flikkman.style.left = "-100%"
     flikkman.style.transition = ""
     flikkman.style.translate = ""

@@ -50,7 +50,8 @@ input:not([type="file"]) {
     border-width: 1px;
 }
 
-fieldset {
+fieldset, textarea, button, input:not([type="file"]) {
+    border-radius: 6px;
     border-color: rgb(107, 107, 107);
 }
 
