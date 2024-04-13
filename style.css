@@ -67,8 +67,12 @@ fieldset, textarea, button, input:not([type="file"]) {
     display: flex;
     flex-direction: column;
 }
+.account-list {
+    display: flex;
+    flex-direction: column;
+}
 
-#levelList {
+#levelList, #accountList {
     overflow-y: scroll;
 }
 
