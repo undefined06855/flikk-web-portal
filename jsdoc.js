@@ -21,3 +21,11 @@
  * @typedef Account
  * @property {string} p
  */
+
+/**
+ * @typedef InfoJSON
+ * @property {string} version
+ * @property {string} description
+ * @property {string} GITVER !!THIS IS NOT SET IN INFO.JSON
+ * @property {Array<string>} features
+ */
