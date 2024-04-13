@@ -255,7 +255,7 @@ async function loadLevelInSingleLevelInfo(level) {
 
             var element = document.createElement("a")
             element.setAttribute("href", "data:text/plaincharset=utf-8," + encodeURIComponent(data))
-            element.setAttribute("download", level.name + ".flkk")
+            element.setAttribute("download", level.title + ".flkk")
             element.click()
         }))
 
