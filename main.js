@@ -421,6 +421,20 @@ async function updateAccountList() {
             updateAccountList()
         }))
 
+        element.append(createButton("Change pswd", () => {
+            let password = prompt("What do you want the changed password to be?")
+            if (password == null) {
+                console.log("cancelled")
+                return
+            }
+
+            post("https://flicc.xyz:1002/admin/account/changePassword", {
+                "apassword": ADMINPASSWORD,
+                "username": name,
+                "password": password
+            })
+        }))
+
         accountList.appendChild(element)
     }
 }
