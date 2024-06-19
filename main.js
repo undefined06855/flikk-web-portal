@@ -239,7 +239,7 @@ async function loadLevelInSingleLevelInfo(level) {
 
             var element = document.createElement("a")
             element.setAttribute("href", "data:text/plaincharset=utf-8," + encodeURIComponent(data))
-            element.setAttribute("download", level.name + ".flkk")
+            element.setAttribute("download", level.title + ".flkk")
             element.click()
         }))
 
@@ -493,12 +493,21 @@ info.appendChild(createButton("Hide", function() {
         if (element.style.color == "transparent") {
             element.style.color = ""
             element.style.backgroundColor = ""
+            window.localStorage.setItem("info-hidden", "false")
         } else {
             element.style.color = "transparent"
             element.style.backgroundColor = "red"
+            window.localStorage.setItem("info-hidden", "true")
         }
     })
 }))
+if (window.localStorage.getItem("info-hidden") == "true") {
+    info.querySelectorAll("input").forEach(element => {
+        element.style.color = "transparent"
+        element.style.backgroundColor = "red"
+        window.localStorage.setItem("info-hidden", "true")
+    })
+}
 
 info.appendChild(createButton("Save locally", function() {
     let inputs = info.querySelectorAll("input")
@@ -512,6 +521,15 @@ info.appendChild(createButton("Save locally", function() {
 info.appendChild(createButton("Clear localStorage", function() {
     window.localStorage.clear()
 }))
+
+let serverInfo = document.createElement("pre")
+serverInfo.innerText = "Loading server info object..."
+info.appendChild(serverInfo)
+!(async () => {
+    /** @type InfoJSON */
+    let serverInfoObject = JSON.parse(await post("https://flicc.xyz:1002/ping", {}))
+    serverInfo.innerText = `Server version: ${serverInfoObject.version}\nServer description: ${serverInfoObject.description}\nServer rate limit: ${serverInfoObject.rateLimit} req / 5 seconds\nServer gitver: ${serverInfoObject.GITVER}Server features: ${serverInfoObject.features.toString().replaceAll(",", ", ")}`
+})()
 
 // create stuff in single level info section
 singleLevelInfo.parentElement.children[1].appendChild(createInputAndButtonPair("Load level from id", "Load", async function(id) {
