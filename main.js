@@ -81,7 +81,7 @@ async function post(url, data) {
 }
 
 async function updateMOTDBox() {
-    let motd = JSON.parse(await post("https://flicc.xyz:1002/motd/get", {
+    let motd = JSON.parse(await post("http://90.250.11.130:2002/motd/get", {
         "username": USERNAME,
         "password": PASSWORD
     })).value
@@ -175,7 +175,7 @@ function createButton(label, callbackOnButton) {
  */
 async function loadLevelInSingleLevelInfo(level) {
     /** @type Array<TimeObject> */
-    let leaderboardNewestData = JSON.parse(await post("https://flicc.xyz:1002/leaderboard/getNewest", {
+    let leaderboardNewestData = JSON.parse(await post("http://90.250.11.130:2002/leaderboard/getNewest", {
         "username": USERNAME,
         "password": PASSWORD,
         "level": level.id
@@ -188,7 +188,7 @@ async function loadLevelInSingleLevelInfo(level) {
     singleLevelInfo.append(lbl)
 
     singleLevelInfo.appendChild(createInputAndButtonPair("Add to a list: ", "Add", function(input) {
-        post("https://flicc.xyz:1002/admin/list/addLevelToList", {
+        post("http://90.250.11.130:2002/admin/list/addLevelToList", {
             "level": level.id,
             "list": input,
             "apassword": ADMINPASSWORD
@@ -196,7 +196,7 @@ async function loadLevelInSingleLevelInfo(level) {
     }))
 
     singleLevelInfo.appendChild(createInputAndButtonPair("Remove from a list: ", "Remove", function(input) {
-        post("https://flicc.xyz:1002/admin/list/removeLevelFromList", {
+        post("http://90.250.11.130:2002/admin/list/removeLevelFromList", {
             "level": level.id,
             "list": input,
             "apassword": ADMINPASSWORD
@@ -204,7 +204,7 @@ async function loadLevelInSingleLevelInfo(level) {
     }))
 
     singleLevelInfo.append(createInputAndButtonPair("Submit leaderboard time: ", "Submit", function(time) {
-        post("https://flicc.xyz:1002/leaderboard/new", {
+        post("http://90.250.11.130:2002/leaderboard/new", {
             "level": level.id,
             "time": Number(time),
             "username": USERNAME,
@@ -214,7 +214,7 @@ async function loadLevelInSingleLevelInfo(level) {
     }))
 
     singleLevelInfo.appendChild(createInputPairWithButton("Set parameter: ", "Set", function(input1, input2) {
-        post("https://flicc.xyz:1002/admin/level/setparam", {
+        post("http://90.250.11.130:2002/admin/level/setparam", {
             "level": level.id,
             "param": input1,
             "value": input2,
@@ -224,7 +224,7 @@ async function loadLevelInSingleLevelInfo(level) {
     }))
 
     singleLevelInfo.appendChild(createInputPairWithButton("Set (num) parameter: ", "Set", function(input1, input2) {
-        post("https://flicc.xyz:1002/admin/level/setparam", {
+        post("http://90.250.11.130:2002/admin/level/setparam", {
             "level": level.id,
             "param": input1,
             "value": input2,
@@ -239,7 +239,7 @@ async function loadLevelInSingleLevelInfo(level) {
     buttons.classList.add("buttons")
 
         buttons.appendChild(createButton("Delete level", function() {
-            post("https://flicc.xyz:1002/admin/level/delete", {
+            post("http://90.250.11.130:2002/admin/level/delete", {
                 "level": level.id,
                 "apassword": ADMINPASSWORD
             })
@@ -247,7 +247,7 @@ async function loadLevelInSingleLevelInfo(level) {
         }))
 
         buttons.appendChild(createButton("Download level data", async function() {
-            let data = JSON.parse(await post("https://flicc.xyz:1002/level/get/single/data", {
+            let data = JSON.parse(await post("http://90.250.11.130:2002/level/get/single/data", {
                 "level": level.id,
                 "username": USERNAME,
                 "password": PASSWORD
@@ -260,13 +260,13 @@ async function loadLevelInSingleLevelInfo(level) {
         }))
 
         buttons.appendChild(createButton("Make featured", function() {
-            post("https://flicc.xyz:1002/admin/level/setparam", {
+            post("http://90.250.11.130:2002/admin/level/setparam", {
                 "level": level.id,
                 "param": "featured",
                 "value": true,
                 "apassword": ADMINPASSWORD
             })
-            post("https://flicc.xyz:1002/admin/list/addLevelToList", {
+            post("http://90.250.11.130:2002/admin/list/addLevelToList", {
                 "level": level.id,
                 "list": "featured",
                 "apassword": ADMINPASSWORD
@@ -275,13 +275,13 @@ async function loadLevelInSingleLevelInfo(level) {
         }))
 
         buttons.appendChild(createButton("Unmake featured", function() {
-            post("https://flicc.xyz:1002/admin/level/setparam", {
+            post("http://90.250.11.130:2002/admin/level/setparam", {
                 "level": level.id,
                 "param": "featured",
                 "value": false,
                 "apassword": ADMINPASSWORD
             })
-            post("https://flicc.xyz:1002/admin/list/removeLevelFromList", {
+            post("http://90.250.11.130:2002/admin/list/removeLevelFromList", {
                 "level": level.id,
                 "list": "featured",
                 "apassword": ADMINPASSWORD
@@ -290,7 +290,7 @@ async function loadLevelInSingleLevelInfo(level) {
         }))
 
         buttons.append(createButton("Unsubmit leaderboard time", function() {
-            post("https://flicc.xyz:1002/admin/leaderboard/deleteRecord", {
+            post("http://90.250.11.130:2002/admin/leaderboard/deleteRecord", {
                 "level": level.id,
                 "username": USERNAME,
                 "apassword": ADMINPASSWORD
@@ -411,7 +411,7 @@ async function updateLevelList() {
     levelList.innerText = "Loading..."
 
     /** @type Array<Level> */
-    let levels = JSON.parse(await post("https://flicc.xyz:1002/level/get/list/data", {
+    let levels = JSON.parse(await post("http://90.250.11.130:2002/level/get/list/data", {
         "page": parseInt(q("#page").value),
         "list": q("#listname").value,
         "username": USERNAME,
@@ -422,7 +422,7 @@ async function updateLevelList() {
 }
 
 async function updateAccountList() {
-    let accounts = JSON.parse(await post("https://flicc.xyz:1002/admin/get/getAllAccountData", {
+    let accounts = JSON.parse(await post("http://90.250.11.130:2002/admin/get/getAllAccountData", {
         "apassword": ADMINPASSWORD
     })).value
 
@@ -440,7 +440,7 @@ async function updateAccountList() {
         element.appendChild(password)
 
         element.append(createButton("Delete", function() {
-            post("https://flicc.xyz:1002/admin/account/deleteAccount", {
+            post("http://90.250.11.130:2002/admin/account/deleteAccount", {
                 "apassword": ADMINPASSWORD,
                 "username": name
             })
@@ -458,7 +458,7 @@ q("#refreshAccountList").addEventListener("click", updateAccountList)
 
 // create stuff in other section
 otherStuff.appendChild(createInputPairWithButton("Create account (username, password)", "Create!", async function(username, password) {
-    let result = JSON.parse(await post("https://flicc.xyz:1002/account/new", {
+    let result = JSON.parse(await post("http://90.250.11.130:2002/account/new", {
         "username": username,
         "password": password
     })).value
@@ -471,7 +471,7 @@ otherStuff.appendChild(createInputPairWithButton("Create account (username, pass
 }))
 
 otherStuff.appendChild(createInputPairWithButton("Change account password (username, password)", "Change", async function(username, password) {
-    let result = JSON.parse(await post("https://flicc.xyz:1002/admin/account/changePassword", {
+    let result = JSON.parse(await post("http://90.250.11.130:2002/admin/account/changePassword", {
         "username": username,
         "password": password,
         "apassword": ADMINPASSWORD
@@ -485,14 +485,14 @@ otherStuff.appendChild(createInputPairWithButton("Change account password (usern
 }))
 otherStuff.append(document.createElement("hr"))
 otherStuff.appendChild(createButton("Backup BINs", function() {
-    post("https://flicc.xyz:1002/admin/backup/triggerBinBackup", {
+    post("http://90.250.11.130:2002/admin/backup/triggerBinBackup", {
         "apassword": ADMINPASSWORD,
     })
     popup("Check server remote desktop!")
 }))
 
 otherStuff.appendChild(createButton("Backup levels", function() {
-    post("https://flicc.xyz:1002/admin/backup/triggerLevelBackup", {
+    post("http://90.250.11.130:2002/admin/backup/triggerLevelBackup", {
         "apassword": ADMINPASSWORD,
     })
     popup("Check server remote desktop!")
@@ -502,7 +502,7 @@ let resultBox = document.createElement("pre")
 resultBox.innerText = "[awaiting input]"
 
 otherStuff.appendChild(createInputAndButtonPair("Get raw list data", "Get", input => {
-    post("https://flicc.xyz:1002/admin/list/getRaw", {
+    post("http://90.250.11.130:2002/admin/list/getRaw", {
         "list": input,
         "apassword": ADMINPASSWORD
     }).then(result => {
@@ -518,7 +518,7 @@ motdBox.innerText = "loading..."
 otherStuff.appendChild(motdBox)
 
 otherStuff.appendChild(createInputAndButtonPair("Set MOTD", "Set", motd => {
-    post("https://flicc.xyz:1002/admin/motd/setMotd", {
+    post("http://90.250.11.130:2002/admin/motd/setMotd", {
         "apassword": ADMINPASSWORD,
         "motd": motd
     })
@@ -567,13 +567,13 @@ serverInfo.innerText = "Loading server info object..."
 info.appendChild(serverInfo)
 !(async () => {
     /** @type InfoJSON */
-    let serverInfoObject = JSON.parse(await post("https://flicc.xyz:1002/ping", {}))
+    let serverInfoObject = JSON.parse(await post("http://90.250.11.130:2002/ping", {}))
     serverInfo.innerText = `Server version: ${serverInfoObject.version}\nServer description: ${serverInfoObject.description}\nServer rate limit: ${serverInfoObject.rateLimit} req / 5 seconds\nServer gitver: ${serverInfoObject.GITVER}Server features: ${serverInfoObject.features.toString().replaceAll(",", ", ")}`
 })()
 
 // create stuff in single level info section
 singleLevelInfo.parentElement.children[1].appendChild(createInputAndButtonPair("Load level from id", "Load", async function(id) {
-    let levelObject = JSON.parse(await post("https://flicc.xyz:1002/level/get/single/metadata", {
+    let levelObject = JSON.parse(await post("http://90.250.11.130:2002/level/get/single/metadata", {
         "username": USERNAME,
         "password": PASSWORD,
         "level": id
@@ -585,7 +585,7 @@ singleLevelInfo.parentElement.children[1].appendChild(createInputAndButtonPair("
 // create stuff in search section
 search.appendChild(createButton("Search (places levels in list on the right)", async function() {
     /** @type Array<Level> */
-    let levels = JSON.parse(await post("https://flicc.xyz:1002/level/search", {
+    let levels = JSON.parse(await post("http://90.250.11.130:2002/level/search", {
         "page": parseInt(q("#searchPage").value),
         "query": q("#searchQuery").value,
         "username": USERNAME,
