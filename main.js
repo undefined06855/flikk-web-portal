@@ -187,22 +187,6 @@ async function loadLevelInSingleLevelInfo(level) {
     lbl.innerText = "Level " + level.id + " (" + level.title + ")"
     singleLevelInfo.append(lbl)
 
-    singleLevelInfo.appendChild(createInputAndButtonPair("Add to a list: ", "Add", function(input) {
-        post("http://90.250.11.130:2002/admin/list/addLevelToList", {
-            "level": level.id,
-            "list": input,
-            "apassword": ADMINPASSWORD
-        })
-    }))
-
-    singleLevelInfo.appendChild(createInputAndButtonPair("Remove from a list: ", "Remove", function(input) {
-        post("http://90.250.11.130:2002/admin/list/removeLevelFromList", {
-            "level": level.id,
-            "list": input,
-            "apassword": ADMINPASSWORD
-        })
-    }))
-
     singleLevelInfo.append(createInputAndButtonPair("Submit leaderboard time: ", "Submit", function(time) {
         post("http://90.250.11.130:2002/leaderboard/new", {
             "level": level.id,
@@ -447,6 +431,20 @@ async function updateAccountList() {
             updateAccountList()
         }))
 
+        element.append(createButton("Change pswd", () => {
+            let password = prompt("What do you want the changed password to be?")
+            if (password == null) {
+                console.log("cancelled")
+                return
+            }
+
+            post("https://flicc.xyz:1002/admin/account/changePassword", {
+                "apassword": ADMINPASSWORD,
+                "username": name,
+                "password": password
+            })
+        }))
+
         accountList.appendChild(element)
     }
 }
@@ -497,20 +495,6 @@ otherStuff.appendChild(createButton("Backup levels", function() {
     })
     popup("Check server remote desktop!")
 }))
-otherStuff.append(document.createElement("hr"))
-let resultBox = document.createElement("pre")
-resultBox.innerText = "[awaiting input]"
-
-otherStuff.appendChild(createInputAndButtonPair("Get raw list data", "Get", input => {
-    post("http://90.250.11.130:2002/admin/list/getRaw", {
-        "list": input,
-        "apassword": ADMINPASSWORD
-    }).then(result => {
-        resultBox.innerText = JSON.stringify(JSON.parse(result).value)
-    })
-}))
-
-otherStuff.appendChild(resultBox)
 otherStuff.append(document.createElement("hr"))
 
 let motdBox = document.createElement("pre")
@@ -595,8 +579,26 @@ search.appendChild(createButton("Search (places levels in list on the right)", a
     fillOutLevelList(levels)
 }))
 
-// create stuff in search section
-
+// create stuff in upload section
+levelUpload.appendChild(createButton("Upload level", async function() {
+    let file = q("#levelUploadFilePicker").files[0]
+    if (file) {
+        let reader = new FileReader()
+        reader.readAsText(file)
+        reader.addEventListener("load", event => {
+            post("https://flicc.xyz:1002/level/upload", {
+                "title": q("#levelUploadName").value,
+                "description": q("#levelUploadDescription").value,
+                "unlisted": q("#levelUploadUnlisted").checked,
+                "levelDataString": event.target.result, // uhhh
+                "requestedDifficulty": parseInt(q("#levelUploadDifficulty").value),
+                "verified": q("#levelUploadVerified").checked,
+                "username": USERNAME,
+                "password": PASSWORD
+            })
+        })
+    }
+}))
 
 // easter egg
 let flikkman = q("#easteregg")
