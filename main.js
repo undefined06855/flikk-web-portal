@@ -438,7 +438,7 @@ async function updateAccountList() {
                 return
             }
 
-            post("https://flicc.xyz:1002/admin/account/changePassword", {
+            post("https://shadyiscool.xyz:2002/admin/account/changePassword", {
                 "apassword": ADMINPASSWORD,
                 "username": name,
                 "password": password
@@ -586,7 +586,7 @@ levelUpload.appendChild(createButton("Upload level", async function() {
         let reader = new FileReader()
         reader.readAsText(file)
         reader.addEventListener("load", event => {
-            post("https://flicc.xyz:1002/level/upload", {
+            post("https://shadyiscool.xyz:2002/level/upload", {
                 "title": q("#levelUploadName").value,
                 "description": q("#levelUploadDescription").value,
                 "unlisted": q("#levelUploadUnlisted").checked,
